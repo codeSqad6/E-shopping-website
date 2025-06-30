@@ -1,5 +1,6 @@
 import { Container, Row } from "react-bootstrap";
 import ProductCard from "./ProductCard/ProductCard";
+import ShowMoreButton from "../utils/ShowMoreButton/ShowMoreButton";
 
 const Section = ({ title, bgColor, productItems }) => {
   return (
@@ -8,7 +9,7 @@ const Section = ({ title, bgColor, productItems }) => {
         <div className="heading">
           <h1>{title}</h1>
         </div>
-        <Row className="justify-content-center">
+        <Row className="g-3">
           {productItems.map((productItem) => {
             return (
               <ProductCard
@@ -18,6 +19,8 @@ const Section = ({ title, bgColor, productItems }) => {
               />
             );
           })}
+          <ShowMoreButton to="/shop" />
+
         </Row>
       </Container>
     </section>

@@ -31,8 +31,9 @@ const NavBar = () => {
       <Container className="navbar-container">
         <Navbar.Brand to="/">
           <ion-icon name="bag"></ion-icon>
-          <h1 className="logo">Multimart</h1>
-        </Navbar.Brand>
+<h1 className="logo">
+  <Link to="/" className="logo-link">E-shopping</Link>
+</h1>        </Navbar.Brand>
         {/* Media cart and toggle */}
         <div className="d-flex">
           <div className="media-cart">

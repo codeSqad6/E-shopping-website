@@ -16,7 +16,8 @@ const ProductCard = ({ title, productItem }) => {
     toast.success("Product has been added to cart!");
   };
   return (
-    <Col md={3} sm={5} xs={10} className="product mtop">
+
+<Col lg={3} md={4} sm={6} xs={12} className="product mtop">
     {title === "Products" && <span className="discount">20% Off</span>}
 
     <img

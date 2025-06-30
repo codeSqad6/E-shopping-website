@@ -40,8 +40,8 @@ const SliderHome = () => {
       });
   }, []);
 
-  if (loading) return <p>جاري التحميل…</p>;
-  if (!images.length) return <p>لا توجد صور للعرض.</p>;
+  if (loading) return <p style={{textAlign:"center"}}> Loading ....</p>;
+  if (!images.length) return <p style={{textAlign:"center"}}>لا توجد صور للعرض.</p>;
   return (
     <section style={{ width: "100%", padding: "1rem 0" }}>
       <style>{`
@@ -56,8 +56,7 @@ const SliderHome = () => {
         display: block;
         width: 100%;
         height: auto;
-        object-fit: cover;
-        object-position: center;
+       
         
       }
         .swiper-button-prev,
@@ -99,10 +98,10 @@ const SliderHome = () => {
                 <SwiperSlide key={idx}>
                   <img
                     style={{
-                      width: "100%",
-                      height: "500px",
-                      objectFit: "cover",
+                      width: "80%",
+                      height: "350px",
                       objectPosition: "center",
+                      borderReduis:"10px"
                     }}
                     src={`http://test.smartsto0re.shop${img.imageUrl}`}
                     alt={img.alt || `Slide ${idx}`}

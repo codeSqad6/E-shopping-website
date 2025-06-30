@@ -19,13 +19,23 @@
 
 .product {
     background: #fff;
-    padding: 20px;
+    width: 300px;
+    padding: 40px;
+    padding-top: 45px;
     position: relative;
     border-radius: 8px;
     box-shadow: rgb(3 0 71 / 9%) 0px 1px 3px;
-    margin: 10px;
+    margin: 1px;
 }
-
+.g-3.row {
+    gap: 20px;
+    margin-top: 20px;
+}
+@media (max-width:600px) {
+    .product{
+        width: 100%;
+    }
+}
 .product h3 {
     margin: 10px 0;
     font-weight: 500;

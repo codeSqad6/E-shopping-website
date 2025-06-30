@@ -1,0 +1,32 @@
+.show-more-btn {
+background-color: #191919;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    width: 175px;
+    margin: auto;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 21px;
+    display: inline-flex
+;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.show-more-btn .arrow {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.show-more-btn:hover {
+background-color: #191919;
+  transform: scale(1.03);
+}
+
+.show-more-btn:hover .arrow {
+  transform: translateX(5px);
+}
