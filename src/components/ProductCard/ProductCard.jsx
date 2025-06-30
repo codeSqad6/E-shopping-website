@@ -17,20 +17,24 @@ const ProductCard = ({ title, productItem }) => {
   };
   return (
     <Col md={3} sm={5} xs={10} className="product mtop">
-      {title === "Big Discount" ? (
-        <span className="discount">{productItem.discount}% Off</span>
-      ) : null}
-      <img
-        loading="lazy"
-        onClick={() => handelClick()}
-        src={productItem.imgUrl}
-        alt=""
-      />
+    {title === "Products" && <span className="discount">20% Off</span>}
+
+    <img
+  loading="lazy"
+  onClick={() => handelClick()}
+  src={
+    productItem.imageUrls
+      ? `http://test.smartsto0re.shop${productItem.imageUrls}`
+      : productItem.imgUrl
+  }
+  alt={productItem.name}
+/>
+
       <div className="product-like">
         <ion-icon name="heart-outline"></ion-icon>
       </div>
       <div className="product-details">
-        <h3 onClick={() => handelClick()}>{productItem.productName}</h3>
+        <h3 onClick={() => handelClick()}>{productItem.name}</h3>
         <div className="rate">
           <i className="fa fa-star"></i>
           <i className="fa fa-star"></i>

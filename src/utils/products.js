@@ -90,7 +90,7 @@ export const serviceData = [
 export const discoutProducts = [
   {
     id: "01",
-    productName: "Stone and Beam Westview ",
+    name: "Stone and Beam Westview ",
     imgUrl: productImg01,
     category: "sofa",
     price: 193,
@@ -109,7 +109,7 @@ export const discoutProducts = [
   },
   {
     id: "02",
-    productName: "Rivet Bigelow Modern ",
+    name: "Rivet Bigelow Modern ",
     imgUrl: productImg02,
     category: "sofa",
     price: 253,
@@ -132,7 +132,7 @@ export const discoutProducts = [
   },
   {
     id: "08",
-    productName: "Baltsar Chair",
+    name: "Baltsar Chair",
     imgUrl: productImg08,
     category: "chair",
     price: 89,
@@ -155,7 +155,7 @@ export const discoutProducts = [
   },
   {
     id: "09",
-    productName: "Helmar Chair",
+    name: "Helmar Chair",
     imgUrl: productImg09,
     category: "chair",
     price: 112,
@@ -178,7 +178,7 @@ export const discoutProducts = [
   },
   {
     id: "12",
-    productName: "Realme 8",
+    name: "Realme 8",
     imgUrl: phone03,
     category: "mobile",
     price: 599,
@@ -201,7 +201,7 @@ export const discoutProducts = [
   },
   {
     id: "13",
-    productName: "One Plus Nord",
+    name: "One Plus Nord",
     imgUrl: phone04,
     category: "mobile",
     price: 799,
@@ -228,7 +228,7 @@ export const discoutProducts = [
 export const products = [
   {
     id: "01",
-    productName: "Stone and Beam Westview ",
+    name: "Stone and Beam Westview ",
     imgUrl: productImg01,
     category: "sofa",
     price: 193,
@@ -247,7 +247,7 @@ export const products = [
 
   {
     id: "02",
-    productName: "Rivet Bigelow Modern ",
+    name: "Rivet Bigelow Modern ",
     imgUrl: productImg02,
     category: "sofa",
     price: 253,
@@ -270,7 +270,7 @@ export const products = [
 
   {
     id: "03",
-    productName: "Amazon Brand Modern Sofa",
+    name: "Amazon Brand Modern Sofa",
     imgUrl: productImg03,
     category: "sofa",
     price: 173,
@@ -292,7 +292,7 @@ export const products = [
   },
   {
     id: "26",
-    productName: "Rivet Bigelow Modern ",
+    name: "Rivet Bigelow Modern ",
     imgUrl: productImg02,
     category: "sofa",
     price: 253,
@@ -314,7 +314,7 @@ export const products = [
   },
   {
     id: "04",
-    productName: "Fllufy Sheep Sofa",
+    name: "Fllufy Sheep Sofa",
     imgUrl: productImg04,
     category: "sofa",
     price: 163,
@@ -337,7 +337,7 @@ export const products = [
 
   {
     id: "05",
-    productName: "Faux Velvet Sofa",
+    name: "Faux Velvet Sofa",
     imgUrl: productImg05,
     category: "sofa",
     price: 163,
@@ -360,7 +360,7 @@ export const products = [
 
   {
     id: "06",
-    productName: "Fllufy Sheep Sofa",
+    name: "Fllufy Sheep Sofa",
     imgUrl: productImg06,
     category: "sofa",
     price: 163,
@@ -382,7 +382,7 @@ export const products = [
   },
   {
     id: "07",
-    productName: "Sakarias Armchair",
+    name: "Sakarias Armchair",
     imgUrl: productImg07,
     category: "chair",
     price: 99,
@@ -405,7 +405,7 @@ export const products = [
 
   {
     id: "27",
-    productName: "Modern Arm Sofa",
+    name: "Modern Arm Sofa",
     imgUrl: productImg007,
     category: "sofa",
     price: 173,
@@ -428,7 +428,7 @@ export const products = [
 
   {
     id: "08",
-    productName: "Baltsar Chair",
+    name: "Baltsar Chair",
     imgUrl: productImg08,
     category: "chair",
     price: 89,
@@ -451,7 +451,7 @@ export const products = [
 
   {
     id: "09",
-    productName: "Helmar Chair",
+    name: "Helmar Chair",
     imgUrl: productImg09,
     category: "chair",
     price: 112,
@@ -474,7 +474,7 @@ export const products = [
 
   {
     id: "10",
-    productName: "Apple iPhone 12 Pro",
+    name: "Apple iPhone 12 Pro",
     imgUrl: phone01,
     category: "mobile",
     price: 799,
@@ -496,7 +496,7 @@ export const products = [
   },
   {
     id: "25",
-    productName: "Sakarias Armchair",
+    name: "Sakarias Armchair",
     imgUrl: productImg10,
     category: "chair",
     price: 99,
@@ -518,7 +518,7 @@ export const products = [
   },
   {
     id: "11",
-    productName: "Apple iPhone 12 Max",
+    name: "Apple iPhone 12 Max",
     imgUrl: phone02,
     category: "mobile",
     price: 799,
@@ -541,7 +541,7 @@ export const products = [
 
   {
     id: "12",
-    productName: "Realme 8",
+    name: "Realme 8",
     imgUrl: phone03,
     category: "mobile",
     price: 599,
@@ -564,7 +564,7 @@ export const products = [
 
   {
     id: "13",
-    productName: "One Plus Nord",
+    name: "One Plus Nord",
     imgUrl: phone04,
     category: "mobile",
     price: 799,
@@ -587,7 +587,7 @@ export const products = [
 
   {
     id: "14",
-    productName: "Apple iPhone 13 Pro",
+    name: "Apple iPhone 13 Pro",
     imgUrl: phone05,
     category: "mobile",
     price: 899,
@@ -610,7 +610,7 @@ export const products = [
 
   {
     id: "15",
-    productName: "Samsung Galaxy S22",
+    name: "Samsung Galaxy S22",
     imgUrl: phone06,
     category: "mobile",
     price: 699,
@@ -633,7 +633,7 @@ export const products = [
 
   {
     id: "16",
-    productName: "Rolex Watch",
+    name: "Rolex Watch",
     imgUrl: watch01,
     category: "watch",
     price: 299,
@@ -656,7 +656,7 @@ export const products = [
 
   {
     id: "17",
-    productName: "Timex Easy Reader Watch",
+    name: "Timex Easy Reader Watch",
     imgUrl: watch02,
     category: "watch",
     price: 299,
@@ -679,7 +679,7 @@ export const products = [
 
   {
     id: "18",
-    productName: "Rolex Watch",
+    name: "Rolex Watch",
     imgUrl: watch03,
     category: "watch",
     price: 299,
@@ -702,7 +702,7 @@ export const products = [
 
   {
     id: "19",
-    productName: "Apple Watch",
+    name: "Apple Watch",
     imgUrl: watch04,
     category: "watch",
     price: 399,
@@ -725,7 +725,7 @@ export const products = [
 
   {
     id: "20",
-    productName: "Beat Studio Wireless",
+    name: "Beat Studio Wireless",
     imgUrl: wireless01,
     category: "wireless",
     price: 199,
@@ -748,7 +748,7 @@ export const products = [
 
   {
     id: "21",
-    productName: "Beat EP Headphones",
+    name: "Beat EP Headphones",
     imgUrl: wireless03,
     category: "wireless",
     price: 199,
@@ -770,7 +770,7 @@ export const products = [
   },
   {
     id: "22",
-    productName: "Black Headphones",
+    name: "Black Headphones",
     imgUrl: wireless02,
     category: "wireless",
     price: 169,
@@ -792,7 +792,7 @@ export const products = [
   },
   {
     id: "23",
-    productName: "Bluetooth Headphones",
+    name: "Bluetooth Headphones",
     imgUrl: wireless04,
     category: "wireless",
     price: 139,
