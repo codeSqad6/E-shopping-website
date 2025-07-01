@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 // import "./catagory-card.css";
 // import { useNavigate } from "react-router-dom";
 // import { toast } from "react-toastify";
