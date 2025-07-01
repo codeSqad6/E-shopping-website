@@ -8,9 +8,16 @@ import { addToCart } from "../../app/features/cart/cartSlice";
 const ProductCard = ({ title, productItem }) => {
   const dispatch = useDispatch();
   const router = useNavigate();
-  const handelClick = () => {
-    router(`/shop/${productItem.id}`);
-  };
+const handelClick = () => {
+  if (productItem.imageUrls) {
+    // المنتج جاي من الـ API
+    router(`/shop/api/${productItem.id}`);
+  } else {
+    // المنتج من المصفوفة المحلية
+    router(`/shop/local/${productItem.id}`);
+  }
+};
+
   const handelAdd = (productItem) => {
     dispatch(addToCart({ product: productItem, num: 1 }));
     toast.success("Product has been added to cart!");
@@ -19,6 +26,7 @@ const ProductCard = ({ title, productItem }) => {
     <Col lg={3} md={4} sm={6} xs={12} className="product mtop">
       {title === "Products" && <span className="discount">20% Off</span>}
 
+<<<<<<< HEAD
       <img
         loading="lazy"
         onClick={() => handelClick()}
@@ -29,6 +37,21 @@ const ProductCard = ({ title, productItem }) => {
         }
         alt={productItem.name}
       />
+=======
+<Col lg={3} md={3} sm={6} xs={12} className="product mtop">
+    {title === "Products" && <span className="discount">20% Off</span>}
+
+    <img
+  loading="lazy"
+  onClick={() => handelClick()}
+  src={
+    productItem.imageUrls
+      ? `http://test.smartsto0re.shop${productItem.imageUrls[0]}`
+      : productItem.imgUrl
+  }
+  alt={productItem.name}
+/>
+>>>>>>> 6709d8994cf9c8cab12dd4202f23c50643ada9c4
 
       <div className="product-like">
         <ion-icon name="heart-outline"></ion-icon>
