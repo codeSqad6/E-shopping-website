@@ -10,6 +10,7 @@ const Home = lazy(() => import("./pages/Home"));
 const Shop = lazy(() => import("./pages/Shop"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Product = lazy(() => import("./pages/Product"));
+const ProductDetailsAPI = lazy(() => import("./components/ProductDetails/ProductDetailsAPI"));
 function App() {
   return (
     <Suspense fallback={<Loader />}>
@@ -29,7 +30,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/:id" element={<Product />} />
+          <Route path="/shop/api/:id" element={<ProductDetailsAPI />} />
+         
+<Route path="/shop/local/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
         <Footer />

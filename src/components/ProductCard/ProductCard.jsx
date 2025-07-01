@@ -8,16 +8,23 @@ import { addToCart } from "../../app/features/cart/cartSlice";
 const ProductCard = ({ title, productItem }) => {
   const dispatch = useDispatch();
   const router = useNavigate();
-  const handelClick = () => {
-    router(`/shop/${productItem.id}`);
-  };
+const handelClick = () => {
+  if (productItem.imageUrls) {
+    // المنتج جاي من الـ API
+    router(`/shop/api/${productItem.id}`);
+  } else {
+    // المنتج من المصفوفة المحلية
+    router(`/shop/local/${productItem.id}`);
+  }
+};
+
   const handelAdd = (productItem) => {
     dispatch(addToCart({ product: productItem, num: 1 }));
     toast.success("Product has been added to cart!");
   };
   return (
 
-<Col lg={3} md={4} sm={6} xs={12} className="product mtop">
+<Col lg={3} md={3} sm={6} xs={12} className="product mtop">
     {title === "Products" && <span className="discount">20% Off</span>}
 
     <img
@@ -25,7 +32,7 @@ const ProductCard = ({ title, productItem }) => {
   onClick={() => handelClick()}
   src={
     productItem.imageUrls
-      ? `http://test.smartsto0re.shop${productItem.imageUrls}`
+      ? `http://test.smartsto0re.shop${productItem.imageUrls[0]}`
       : productItem.imgUrl
   }
   alt={productItem.name}
