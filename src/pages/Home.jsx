@@ -5,13 +5,17 @@ import { products } from "../utils/products"; // مفيش داعي لاستدع�
 import SliderHome from "../components/Slider";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
 import axios from "axios";
+import Categories from "../components/Catagories/Catagory";
 
 const Home = () => {
   const [productsFromApi, setProductsFromApi] = useState([]);
 
-  const newArrivalData = products.filter(
-    (item) => item.category === "mobile" || item.category === "wireless"
-  );
+  // const newArrivalData = products.filter(
+  //   (item) => item.category === "mobile" || item.category === "wireless"
+  // );
+
+  const [CatagoriesItem, setCatagoriesItem] = useState([]);
+
   const bestSales = products.filter((item) => item.category === "sofa");
 
   useWindowScrollToTop();
@@ -19,7 +23,9 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://test.smartsto0re.shop/api/Products");
+        const res = await axios.get(
+          "http://test.smartsto0re.shop/api/Products"
+        );
         setProductsFromApi(res.data.data); // حسب شكل الـ API عندك
       } catch (error) {
         console.error("❌ Error fetching products:", error);
@@ -27,6 +33,20 @@ const Home = () => {
     };
 
     fetchProducts();
+  }, []);
+  useEffect(() => {
+    const fetchCatagories = async () => {
+      try {
+        const res = await axios.get(
+          "http://test.smartsto0re.shop/api/Categories"
+        );
+        setCatagoriesItem(res.data.data); // حسب شكل الـ API عندك
+      } catch (error) {
+        console.error("❌ Error fetching products:", error);
+      }
+    };
+
+    fetchCatagories();
   }, []);
 
   return (
@@ -38,16 +58,13 @@ const Home = () => {
         bgColor="#f6f9fc"
         productItems={productsFromApi}
       />
-      <Section
-        title="New Arrivals"
-        bgColor="white"
-        productItems={newArrivalData}
+      <Categories
+      // title="Categories"
+      // bgColor="white"
+      // productItems={CatagoriesItem}
       />
-      <Section
-        title="Best Sales"
-        bgColor="#f6f9fc"
-        productItems={bestSales}
-      />
+
+      <Section title="Best Sales" bgColor="#f6f9fc" productItems={bestSales} />
     </Fragment>
   );
 };

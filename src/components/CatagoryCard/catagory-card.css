@@ -1,0 +1,108 @@
+.catagory img {
+  width: 200px;
+  height: 200px !important;
+  /* object-fit: contain; */
+  cursor: pointer;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.catagory {
+  background: #fff;
+  width: 250px;
+  /* padding: 40px; */
+  padding-top: 45px;
+  position: relative;
+  /* border-radius: 8px; */
+  /* box-shadow: rgb(3 0 71 / 9%) 0px 1px 3px; */
+  margin: 1px;
+  justify-content: center;
+  align-items: center;
+}
+.catagory h2 {
+  padding-bottom: 15px;
+}
+.g-3.row {
+  gap: 10px;
+  margin-top: 10px;
+}
+@media (max-width: 600px) {
+  .catagory {
+    width: 100%;
+  }
+}
+.catagory h3 {
+  margin: 10px 0;
+  font-weight: 500;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.catagory .rate i {
+  font-size: 15px;
+  color: #ffcd4e;
+  margin: 5px 5px 5px 0;
+}
+
+.catagory .price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+}
+
+.price h4 {
+  margin: 20px 0 10px;
+}
+
+.price button {
+  background: none;
+  color: #0f3460;
+  font-size: 20px;
+  transition: 0.5s;
+  border: 1px solid rgb(3 0 71 / 9%);
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+}
+
+.price button:hover {
+  cursor: pointer;
+  background-color: #0f3460;
+  color: #fff;
+}
+
+button.add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  border-radius: 50%;
+}
+
+.catagory-like {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.catagory-like label {
+  background-color: #0f3460;
+  padding: 1px 10px;
+  font-size: 12px;
+  color: white;
+  border-radius: 50px;
+}
+
+.catagory-like ion-icon {
+  font-size: 20px;
+  margin: 10px 3px;
+  cursor: pointer;
+}
+
+.catagory:hover .catagory-like {
+  opacity: 1;
+}

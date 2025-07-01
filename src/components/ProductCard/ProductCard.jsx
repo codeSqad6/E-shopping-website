@@ -16,20 +16,19 @@ const ProductCard = ({ title, productItem }) => {
     toast.success("Product has been added to cart!");
   };
   return (
+    <Col lg={3} md={4} sm={6} xs={12} className="product mtop">
+      {title === "Products" && <span className="discount">20% Off</span>}
 
-<Col lg={3} md={4} sm={6} xs={12} className="product mtop">
-    {title === "Products" && <span className="discount">20% Off</span>}
-
-    <img
-  loading="lazy"
-  onClick={() => handelClick()}
-  src={
-    productItem.imageUrls
-      ? `http://test.smartsto0re.shop${productItem.imageUrls}`
-      : productItem.imgUrl
-  }
-  alt={productItem.name}
-/>
+      <img
+        loading="lazy"
+        onClick={() => handelClick()}
+        src={
+          productItem.imageUrls
+            ? `http://test.smartsto0re.shop${productItem.imageUrls}`
+            : productItem.imgUrl
+        }
+        alt={productItem.name}
+      />
 
       <div className="product-like">
         <ion-icon name="heart-outline"></ion-icon>
