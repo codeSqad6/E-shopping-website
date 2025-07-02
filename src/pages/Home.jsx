@@ -9,15 +9,9 @@ import Categories from "../components/Catagories/Catagory";
 
 const Home = () => {
   const [productsFromApi, setProductsFromApi] = useState([]);
-
-  // const newArrivalData = products.filter(
-  //   (item) => item.category === "mobile" || item.category === "wireless"
-  // );
-
   const [CatagoriesItem, setCatagoriesItem] = useState([]);
 
-  const bestSales = products.filter((item) => item.category === "sofa");
-
+ const [BrandsFromApi, setBrandsFromApi] = useState([]);
   useWindowScrollToTop();
 
   useEffect(() => {
@@ -33,6 +27,20 @@ const Home = () => {
     };
 
     fetchProducts();
+  }, []);
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await axios.get(
+          "http://test.smartsto0re.shop/api/Brands"
+        );
+        setBrandsFromApi(res.data.data); // حسب شكل الـ API عندك
+      } catch (error) {
+        console.error("❌ Error fetching Brands:", error);
+      }
+    };
+
+    fetchBrands();
   }, []);
   useEffect(() => {
     const fetchCatagories = async () => {
@@ -64,7 +72,7 @@ const Home = () => {
       // productItems={CatagoriesItem}
       />
 
-      <Section title="Best Sales" bgColor="#f6f9fc" productItems={bestSales} />
+      <Section title="Brands" bgColor="#f6f9fc" BrandItems={BrandsFromApi} />
     </Fragment>
   );
 };
