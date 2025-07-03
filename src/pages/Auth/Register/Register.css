@@ -1,0 +1,89 @@
+.register-page {
+  min-height: 100vh;
+  background: url('/src/Images/table.jpg') center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-box {
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 40px;
+  margin: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  color: #fff;
+}
+
+.register-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #fff;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group .icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #6c757d;
+  font-size: 16px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.input-group .form-control {
+  padding-left: 40px;
+  height: 45px;
+  min-height: 45px;
+  font-size: 14px;
+  border-radius: 8px;
+  background-color: #f1f1f1;
+  border: none;
+}
+
+.input-group .form-control:focus {
+  box-shadow: none;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-register {
+  background-color: #007bff;
+  border: none;
+  height: 45px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.btn-register:hover {
+  background-color: #0056b3;
+}
+
+.signup-link {
+  color: #0d6efd;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+.text-white {
+  color: #f8f9fa !important;
+}

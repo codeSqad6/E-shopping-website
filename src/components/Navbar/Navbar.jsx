@@ -110,7 +110,13 @@ const NavBar = () => {
                 <span className="nav-link-label">Cart</span>
               </Link>
             </Nav.Item>
-            <Nav.Item className="expanded-cart">
+            <Nav.Item >
+             
+               <Link
+                aria-label="Go to Login Page"
+                to="/Login" 
+                  onClick={() => setExpand(false)}
+              >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -123,6 +129,10 @@ const NavBar = () => {
                   clipRule="evenodd"
                 />
               </svg>
+              </Link>
+            </Nav.Item>
+            <Nav.Item className="expanded-cart">
+             
               <Link
                 aria-label="Go to Cart Page"
                 to="/cart"
