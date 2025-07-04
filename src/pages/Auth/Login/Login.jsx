@@ -1,27 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../authApi";
 import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
+  const navigate = useNavigate();
 
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log({ email, password });
+    try {
+      const res = await loginUser({ email, password });
+
+      // حفظ التوكن في localStorage
+      localStorage.setItem("token", res.data.token);
+
+      // إعادة التوجيه للصفحة الرئيسية
+      navigate("/");
+    } catch (err) {
+      setErrorMsg(
+        err.response?.data?.message || "Login failed. Please try again."
+      );
+    }
   };
 
   return (
     <div className="login-page">
       <div className="login-box">
         <h2>Login Form</h2>
+        {errorMsg && (
+          <div className="alert alert-danger text-center py-2">{errorMsg}</div>
+        )}
         <Form onSubmit={handleLogin}>
           <div className="input-group">
-            <FaUser className="icon" />
+            <FaUser className="icons" />
             <Form.Control
               type="text"
               placeholder="Email or Phone"
@@ -32,7 +50,7 @@ const Login = () => {
           </div>
 
           <div className="input-group">
-            <FaLock className="icon" />
+            <FaLock className="icons" />
             <Form.Control
               type={showPassword ? "text" : "password"}
               placeholder="Password"
@@ -49,13 +67,19 @@ const Login = () => {
           </div>
 
           <div className="text-end mb-3">
-            <a href="/Forgot" className="forgot-link">Forgot Password?</a>
+            <a href="/Forgot" className="forgot-link">
+              Forgot Password?
+            </a>
           </div>
 
-          <Button type="submit" className="btn-login w-100">LOGIN</Button>
+          <Button type="submit" className="btn-login w-100">
+            LOGIN
+          </Button>
           <div className="text-center mt-4">
             <span className="text-white">Don't have account? </span>
-            <a href="/Register" className="signup-link">Sign Up Now</a>
+            <a href="/Register" className="signup-link">
+              Sign Up Now
+            </a>
           </div>
         </Form>
       </div>

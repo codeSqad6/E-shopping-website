@@ -1,27 +1,36 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { FaEnvelope } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { forgotPassword } from "../authApi";
 import "./Forgot.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
 
-  const handleReset = (e) => {
+  const handleReset = async (e) => {
     e.preventDefault();
-    console.log("Reset password for:", email);
+    setErrorMsg("");
 
-    // بعد الربط بـ API:
-    // fetch('/forgot-password', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email }),
-    // }).then(res => res.json()).then(data => console.log(data));
+    try {
+      await forgotPassword(email);
+      navigate("/Reset", { state: { email } }); // انتقل للخطوة التالية مع حفظ الإيميل
+    } catch (err) {
+      setErrorMsg(
+        err.response?.data?.message || "Failed to send reset code. Try again."
+      );
+    }
   };
 
   return (
     <div className="register-page">
       <div className="register-box">
         <h2>Forgot Password</h2>
+        {errorMsg && (
+          <div className="alert alert-danger text-center py-2">{errorMsg}</div>
+        )}
         <Form onSubmit={handleReset}>
           <div className="input-group">
             <FaEnvelope className="icon" />
@@ -33,11 +42,9 @@ const ForgotPassword = () => {
               required
             />
           </div>
-
           <Button type="submit" className="btn-register w-100">
-            Send Reset Link
+            Send Code
           </Button>
-
           <div className="text-center mt-4">
             <span className="text-white">Remember your password? </span>
             <a href="/Login" className="signup-link">Back to Login</a>
