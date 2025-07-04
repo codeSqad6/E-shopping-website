@@ -12,6 +12,7 @@ const Cart = lazy(() => import("./pages/Cart"));
 const Login = lazy(() => import("./pages/Auth/Login/Login"));
 const Register = lazy(() => import("./pages/Auth/Register/Register"));
 const Forgot = lazy(() => import("./pages/Auth/Forgot/Forgot"));
+const Reset = lazy(() => import("./pages/Auth/Forgot/ResetPassword"));
 const Product = lazy(() => import("./pages/Product"));
 const ProductDetailsAPI = lazy(() => import("./components/ProductDetails/ProductDetailsAPI"));
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Forgot" element={<Forgot />} />
+          <Route path="/Reset" element={<Reset />} />
         </Routes>
         <Footer />
       </Router>
