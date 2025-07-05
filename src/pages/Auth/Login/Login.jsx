@@ -1,33 +1,37 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../authApi";
 import "./Login.css";
 
-const Login = () => {
+const Login =  ({ setIsLoggedIn })=> {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
+
     try {
       const res = await loginUser({ email, password });
 
-      // حفظ التوكن في localStorage
+      // حفظ التوكن
       localStorage.setItem("token", res.data.token);
-      console.log('res',res);
-      
-      // إعادة التوجيه للصفحة الرئيسية
-      // navigate("/");
+       setIsLoggedIn(true); //
+      navigate("/");
     } catch (err) {
       setErrorMsg(
-        err.response?.data?.message || "Login failed. Please try again."
+        err.response?.data?.message || "Incorrect email or password."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,9 +39,11 @@ const Login = () => {
     <div className="login-page">
       <div className="login-box">
         <h2>Login Form</h2>
+
         {errorMsg && (
           <div className="alert alert-danger text-center py-2">{errorMsg}</div>
         )}
+
         <Form onSubmit={handleLogin}>
           <div className="input-group">
             <FaUser className="icons" />
@@ -68,19 +74,20 @@ const Login = () => {
           </div>
 
           <div className="text-end mb-3">
-            <a href="/Forgot" className="forgot-link">
+            <Link to="/Forgot" className="forgot-link">
               Forgot Password?
-            </a>
+            </Link>
           </div>
 
-          <Button type="submit" className="btn-login w-100">
-            LOGIN
+          <Button type="submit" className="btn-login w-100" disabled={loading}>
+            {loading ? <Spinner animation="border" size="sm" /> : "LOGIN"}
           </Button>
+
           <div className="text-center mt-4">
-            <span className="text-white">Don't have account? </span>
-            <a href="/Register" className="signup-link">
+            <span className="text-white">Don't have an account? </span>
+            <Link to="/Register" className="signup-link">
               Sign Up Now
-            </a>
+            </Link>
           </div>
         </Form>
       </div>

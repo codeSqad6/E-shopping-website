@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { FaEnvelope } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { forgotPassword } from "../authApi";
 import "./Forgot.css";
 
@@ -33,7 +33,7 @@ const ForgotPassword = () => {
         )}
         <Form onSubmit={handleReset}>
           <div className="input-group">
-            <FaEnvelope className="icon" />
+            <FaEnvelope className="icons" />
             <Form.Control
               type="email"
               placeholder="Enter your email"
@@ -47,7 +47,7 @@ const ForgotPassword = () => {
           </Button>
           <div className="text-center mt-4">
             <span className="text-white">Remember your password? </span>
-            <a href="/Login" className="signup-link">Back to Login</a>
+         <Link to="/login" className="signup-link">Back to Login</Link>
           </div>
         </Form>
       </div>
