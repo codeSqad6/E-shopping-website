@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import React, { useState,useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./components/Navbar/Navbar";
@@ -15,7 +16,14 @@ const Forgot = lazy(() => import("./pages/Auth/Forgot/Forgot"));
 const Reset = lazy(() => import("./pages/Auth/Forgot/ResetPassword"));
 const Product = lazy(() => import("./pages/Product"));
 const ProductDetailsAPI = lazy(() => import("./components/ProductDetails/ProductDetailsAPI"));
+
 function App() {
+   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  },[]);
   return (
     <Suspense fallback={<Loader />}>
       <Router>
@@ -30,7 +38,7 @@ function App() {
           pauseOnHover
           theme="light"
         />
-        <NavBar />
+        <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
@@ -38,7 +46,7 @@ function App() {
          
 <Route path="/shop/local/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/Login" element={<Login />} />
+          <Route path="/Login" element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Forgot" element={<Forgot />} />
           <Route path="/Reset" element={<Reset />} />
