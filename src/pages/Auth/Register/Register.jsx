@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Modal, Spinner } from "react-bootstrap";
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { registerUser, sendVerificationCode } from "../authApi";
 import "./Register.css";
 
@@ -17,8 +18,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false); 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" }); // reset error on change
@@ -35,6 +35,8 @@ const Register = () => {
     try {
       await registerUser(dataToSend);
       setShowDialog(true);
+  toast.success("🎉 Account created successfully! Please verify your email.");
+
     } catch (err) {
       const apiErrors = err.response?.data || {};
       const fieldErrors = {};
@@ -79,9 +81,10 @@ const Register = () => {
     const code = otp.join("");
     try {
       await sendVerificationCode({ email: form.email, code });
+      toast.success("🎉 Registration successfully");
       navigate("/");
     } catch (err) {
-      alert("Verification failed. Please try again.");
+      toast.error("Verification failed. Please try again.");
     }
   };
 

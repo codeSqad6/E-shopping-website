@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Spinner } from "react-bootstrap";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { loginUser } from "../authApi";
 import "./Login.css";
 
@@ -11,6 +12,8 @@ const Login =  ({ setIsLoggedIn })=> {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
+ 
+
 
   const navigate = useNavigate();
 
@@ -25,7 +28,9 @@ const Login =  ({ setIsLoggedIn })=> {
       // حفظ التوكن
       localStorage.setItem("token", res.data.token);
        setIsLoggedIn(true); //
+      
       navigate("/");
+      toast.success('👋 Welcome back!');
     } catch (err) {
       setErrorMsg(
         err.response?.data?.message || "Incorrect email or password."
@@ -45,6 +50,7 @@ const Login =  ({ setIsLoggedIn })=> {
         )}
 
         <Form onSubmit={handleLogin}>
+  
           <div className="input-group">
             <FaUser className="icons" />
             <Form.Control

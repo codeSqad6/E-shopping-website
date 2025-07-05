@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Nav, Navbar,Modal, Button } from "react-bootstrap";
 import "./navbar.css";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { useSelector } from "react-redux";
 const NavBar = ({ isLoggedIn, setIsLoggedIn })  => {
   const { cartList } = useSelector((state) => state.cart);
@@ -13,6 +14,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn })  => {
   localStorage.removeItem("token");
   setIsLoggedIn(false);
   setShowLogoutDialog(false);
+  toast.success('logged out successfully!');
   navigate("/"); // يرجّع المستخدم للرئيسية بعد تسجيل الخروج
 };
 
