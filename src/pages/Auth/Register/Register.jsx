@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Form, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal, Spinner } from "react-bootstrap";
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { registerUser, sendVerificationCode } from "../authApi";
 import "./Register.css";
 
@@ -13,40 +13,55 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" }); // reset error on change
   };
 
-  // ✅ دالة تحقق كلمة المرور
-  const isValidPassword = (password) => {
-    const regex = /[^a-zA-Z0-9]/; // يجب أن تحتوي على رمز
-    return regex.test(password);
-  };
-
-  // ✅ دالة إرسال بيانات التسجيل
   const handleShowDialog = async (e) => {
     e.preventDefault();
+    setErrors({});
+    setLoading(true);
 
-    if (!isValidPassword(form.password)) {
-      alert("Password must contain at least one special character (e.g. @, #, !)");
-      return;
-    }
-
-    const newUsername = `${form.firstName}${form.lastName}`.replace(/\s/g, "").toLowerCase();
-    const dataToSend = { ...form, username: newUsername };
+    const username = `${form.firstName}${form.lastName}`.replace(/\s/g, "").toLowerCase();
+    const dataToSend = { ...form, username };
 
     try {
-      console.log("📤 Data sent to API:", dataToSend);
       await registerUser(dataToSend);
       setShowDialog(true);
     } catch (err) {
-      console.log("❌ API Error:", err.response?.data);
-      setErrorMsg(err.response?.data?.message || "Registration failed");
+      const apiErrors = err.response?.data || {};
+      const fieldErrors = {};
+
+      if (typeof apiErrors === "string") {
+        // error message is one string
+        if (apiErrors.toLowerCase().includes("email")) {
+          fieldErrors.email = apiErrors;
+        } else if (apiErrors.toLowerCase().includes("username")) {
+          fieldErrors.firstName = apiErrors;
+          fieldErrors.lastName = apiErrors;
+        } else if (apiErrors.toLowerCase().includes("password")) {
+          fieldErrors.password = apiErrors;
+        }
+      } else if (Array.isArray(apiErrors)) {
+        apiErrors.forEach((msg) => {
+          if (msg.toLowerCase().includes("email")) fieldErrors.email = msg;
+          else if (msg.toLowerCase().includes("username")) {
+            fieldErrors.firstName = msg;
+            fieldErrors.lastName = msg;
+          } else if (msg.toLowerCase().includes("password")) fieldErrors.password = msg;
+        });
+      }
+
+      setErrors(fieldErrors);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,9 +70,8 @@ const Register = () => {
     const updatedOtp = [...otp];
     updatedOtp[index] = value;
     setOtp(updatedOtp);
-
     if (value && index < 5) {
-      document.getElementById(`otp-${index + 1}`).focus();
+      document.getElementById(`otp-${index + 1}`)?.focus();
     }
   };
 
@@ -75,14 +89,9 @@ const Register = () => {
     <div className="register-page">
       <div className="register-box">
         <h2>Create Account</h2>
-
-        {errorMsg && (
-          <div className="alert alert-danger text-center py-2">{errorMsg}</div>
-        )}
-
         <Form onSubmit={handleShowDialog}>
           <div className="input-group">
-            <FaUser className="icon" />
+            <FaUser className="icons" />
             <Form.Control
               type="text"
               name="firstName"
@@ -90,23 +99,27 @@ const Register = () => {
               value={form.firstName}
               onChange={handleChange}
               required
+              isInvalid={!!errors.firstName}
             />
+            <Form.Control.Feedback type="invalid">{errors.firstName}</Form.Control.Feedback>
           </div>
 
           <div className="input-group">
-            <FaUser className="icon" />
+            <FaUser className="icons" />
             <Form.Control
               type="text"
               name="lastName"
               placeholder="Last Name"
-              value={form.lastName}
+                            value={form.lastName}
               onChange={handleChange}
               required
+              isInvalid={!!errors.lastName}
             />
+            <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
           </div>
 
           <div className="input-group">
-            <FaEnvelope className="icon" />
+            <FaEnvelope className="icons" />
             <Form.Control
               type="email"
               name="email"
@@ -114,11 +127,13 @@ const Register = () => {
               value={form.email}
               onChange={handleChange}
               required
+              isInvalid={!!errors.email}
             />
+            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
           </div>
 
           <div className="input-group">
-            <FaLock className="icon" />
+            <FaLock className="icons" />
             <Form.Control
               type={showPassword ? "text" : "password"}
               name="password"
@@ -126,7 +141,9 @@ const Register = () => {
               value={form.password}
               onChange={handleChange}
               required
+              isInvalid={!!errors.password}
             />
+            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
             <span
               className="toggle-password"
               onClick={() => setShowPassword(!showPassword)}
@@ -135,16 +152,18 @@ const Register = () => {
             </span>
           </div>
 
-          <Button type="submit" className="btn-register w-100">Register</Button>
+          <Button type="submit" className="btn-register w-100" disabled={loading}>
+            {loading ? <Spinner animation="border" size="sm" /> : "Register"}
+          </Button>
 
           <div className="text-center mt-4">
             <span className="text-white">Already have an account? </span>
-            <a href="/login" className="signup-link">Login Now</a>
+            <Link to="/login" className="signup-link">Login Now</Link>
           </div>
         </Form>
       </div>
 
-      {/* Dialog التحقق */}
+      {/* Modal for OTP Verification */}
       <Modal show={showDialog} onHide={() => setShowDialog(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Verification code</Modal.Title>
@@ -173,12 +192,8 @@ const Register = () => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDialog(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleSendOtp}>
-            Send
-          </Button>
+          <Button variant="secondary" onClick={() => setShowDialog(false)}>Cancel</Button>
+          <Button variant="primary" onClick={handleSendOtp}>Send</Button>
         </Modal.Footer>
       </Modal>
     </div>
@@ -186,3 +201,4 @@ const Register = () => {
 };
 
 export default Register;
+

@@ -46,7 +46,7 @@ const ResetPassword = () => {
           </div>
 
           <div className="input-group">
-            <FaLock className="icon" />
+            <FaLock className="icons" />
             <Form.Control
               type="password"
               placeholder="New Password"
