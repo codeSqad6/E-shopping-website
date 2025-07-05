@@ -8,7 +8,7 @@ const ShopList = ({ productItems }) => {
     return <h1 className="not-found">Product Not Found !!</h1>;
   }
   return (
-    <Row className="justify-content-center mt-5">
+    <Row className="justify-content-center mt-5 mb-5">
       {productItems.map((productItem) => {
         return (
           <ProductCard
