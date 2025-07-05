@@ -1,21 +1,32 @@
 import { useEffect, useState } from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar,Modal, Button } from "react-bootstrap";
 import "./navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-const NavBar = () => {
+const NavBar = ({ isLoggedIn, setIsLoggedIn })  => {
   const { cartList } = useSelector((state) => state.cart);
   const [expand, setExpand] = useState(false);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
-  // fixed Header
-  function scrollHandler() {
-    if (window.scrollY >= 100) {
-      setIsFixed(true);
-    } else if (window.scrollY <= 50) {
-      setIsFixed(false);
-    }
-  }
-  window.addEventListener("scroll", scrollHandler);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+  localStorage.removeItem("token");
+  setIsLoggedIn(false);
+  setShowLogoutDialog(false);
+  navigate("/"); // يرجّع المستخدم للرئيسية بعد تسجيل الخروج
+};
+
+  useEffect(() => {
+    const scrollHandler = () => {
+      if (window.scrollY >= 100) {
+        setIsFixed(true);
+      } else if (window.scrollY <= 50) {
+        setIsFixed(false);
+      }
+    };
+    window.addEventListener("scroll", scrollHandler);
+    return () => window.removeEventListener("scroll", scrollHandler);
+  }, []);
   // useEffect(()=> {
   //   if(CartItem.length ===0) {
   //     const storedCart = localStorage.getItem("cartItem");
@@ -23,6 +34,7 @@ const NavBar = () => {
   //   }
   // },[])
   return (
+    <div>
     <Navbar
       fixed="top"
       expand="md"
@@ -88,7 +100,6 @@ const NavBar = () => {
                 <span className="nav-link-label">Home</span>
               </Link>
             </Nav.Item>
-
             <Nav.Item>
               <Link
                 aria-label="Go to Shop Page"
@@ -110,6 +121,7 @@ const NavBar = () => {
                 <span className="nav-link-label">Cart</span>
               </Link>
             </Nav.Item>
+            {!isLoggedIn ? (
             <Nav.Item >
              
                <Link
@@ -131,6 +143,16 @@ const NavBar = () => {
               </svg>
               </Link>
             </Nav.Item>
+            ) : (
+              <Nav.Item>
+                <span onClick={() => setShowLogoutDialog(true)} style={{ cursor: "pointer" }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" className="nav-icon">
+                     <path d="M16 13v-2H7V8l-5 4 5 4v-3h9z" />
+                    <path d="M20 3h-9v2h9v14h-9v2h9c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
+                  </svg>
+               </span>
+             </Nav.Item>
+               )}
             <Nav.Item className="expanded-cart">
              
               <Link
@@ -153,6 +175,22 @@ const NavBar = () => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+
+    <Modal show={showLogoutDialog} onHide={() => setShowLogoutDialog(false)} centered>
+  <Modal.Header closeButton>
+    <Modal.Title>Confirm Logout</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>Are you sure you want to log out?</Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowLogoutDialog(false)}>
+      Cancel
+    </Button>
+    <Button variant="danger" onClick={handleLogout}>
+      Yes 
+    </Button>
+  </Modal.Footer>
+</Modal>
+</div>
   );
 };
 
