@@ -10,10 +10,8 @@ const ProductCard = ({ title, productItem }) => {
   const router = useNavigate();
   const handelClick = () => {
     if (productItem.imageUrls) {
-      // المنتج جاي من الـ API
       router(`/shop/api/${productItem.id}`);
     } else {
-      // المنتج من المصفوفة المحلية
       router(`/shop/local/${productItem.id}`);
     }
   };
