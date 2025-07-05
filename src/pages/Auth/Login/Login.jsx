@@ -20,9 +20,10 @@ const Login = () => {
 
       // حفظ التوكن في localStorage
       localStorage.setItem("token", res.data.token);
-
+      console.log('res',res);
+      
       // إعادة التوجيه للصفحة الرئيسية
-      navigate("/");
+      // navigate("/");
     } catch (err) {
       setErrorMsg(
         err.response?.data?.message || "Login failed. Please try again."
