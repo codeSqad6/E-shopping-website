@@ -1,10 +1,6 @@
 import Select from 'react-select';
-import { getProducts } from '../services/products_services';
 import { useEffect, useState } from 'react';
 import { getCategories } from '../services/categories_service';
-
-
-
 
 const customStyles = {
   control: (provided) => ({
@@ -32,46 +28,47 @@ const customStyles = {
   }),
 };
 
-const FilterSelect = ({ setFilterList, setCurrentPage, setTotalPages }) => {
-  const [allProducts, setAllProducts] = useState([]);
+const FilterSelect = ({ allProducts, setFilterList, setCurrentPage }) => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCategories = async () => {
       try {
-        const resProducts = await getProducts(1, 10000); // get all products
-        setAllProducts(resProducts.data.data || []);
-
-        const resCategory = await getCategories();
-        setCategories(resCategory.data || []);
+        const res = await getCategories();
+        setCategories(res.data || []);
       } catch (error) {
-        console.error('Failed to fetch data:', error);
+        console.error('Failed to fetch categories:', error);
       }
     };
 
-    fetchData();
+    fetchCategories();
   }, []);
 
-  const options = categories.map(category => ({
-    value: category.id,
-    label: category.name
-  }));
+  const options = [
+    { value: "", label: "All Categories" },
+    ...categories.map(category => ({
+      value: category.id,
+      label: category.name
+    }))
+  ];
 
   const handleChange = (selectedOption) => {
-    const filtered = allProducts.filter(item => item.categoryId === selectedOption.value);
-    
-    // Reset to first page of filtered results
-    setCurrentPage(1);
-    setTotalPages(Math.ceil(filtered.length / 10));
+    const selectedCategoryId = selectedOption.value;
+   const filtered = selectedCategoryId
+  ? Array.isArray(allProducts)
+    ? allProducts.filter(item => item.categoryId === selectedCategoryId)
+    : []
+  : allProducts || [];
 
-    // Only show first 10 products
+
+    setCurrentPage(1);
     setFilterList(filtered);
   };
 
   return (
     <Select
       options={options}
-      defaultValue={{ value: "", label: "Filter By Category" }}
+      defaultValue={options[0]}
       styles={customStyles}
       onChange={handleChange}
     />

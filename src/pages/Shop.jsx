@@ -54,7 +54,7 @@ const Shop = () => {
             <FilterSelect
                setFilterList={setFilterList}
                setCurrentPage={setCurrentPage}
-               setTotalPages={setTotalPages}
+              allProducts={allproducts || []}
             />
 
             </Col>
@@ -62,7 +62,7 @@ const Shop = () => {
               <SearchBar
                 setFilterList={setFilterList}
                  setCurrentPage={setCurrentPage}
-                setTotalPages={setTotalPages}
+             allProducts={allproducts || []}
               />
             </Col>
           </Row>
