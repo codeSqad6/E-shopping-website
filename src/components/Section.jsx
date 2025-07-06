@@ -100,7 +100,6 @@ import "swiper/css/navigation";
 const Section = ({ title, bgColor, productItems, BrandItems }) => {
   const products = Array.isArray(productItems) ? productItems : [];
   const brands = Array.isArray(BrandItems) ? BrandItems : [];
-
   return (
     <section style={{ background: bgColor }}>
       <Container>
@@ -136,13 +135,13 @@ const Section = ({ title, bgColor, productItems, BrandItems }) => {
                 slidesPerView={4}
                 breakpoints={{
                   320: { slidesPerView: 1 },
-                  640: { slidesPerView: 1 },
-                  992: { slidesPerView: 3 },
+                  640: { slidesPerView: 2},
+                  992: { slidesPerView: 1},
                   1200: { slidesPerView: 4 },
                 }}
                 className="product-swiper"
               >
-                {products.map((productItem) => (
+                {products.slice(0, 10).map((productItem) => (
                   <SwiperSlide className="custom" key={productItem.id}>
                     <ProductCard title={title} productItem={productItem} />
                   </SwiperSlide>
