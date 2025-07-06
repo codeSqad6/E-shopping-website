@@ -32,17 +32,18 @@ const customStyles = {
   }),
 };
 
-const FilterSelect = ({ setFilterList }) => {
-  const [products, setProducts] = useState([]);
+const FilterSelect = ({ setFilterList, setCurrentPage, setTotalPages }) => {
+  const [allProducts, setAllProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resProducts = await getProducts();
-        setProducts(resProducts.data); 
+        const resProducts = await getProducts(1, 10000); // get all products
+        setAllProducts(resProducts.data.data || []);
+
         const resCategory = await getCategories();
-        setCategories(resCategory.data); 
+        setCategories(resCategory.data || []);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
@@ -50,12 +51,20 @@ const FilterSelect = ({ setFilterList }) => {
 
     fetchData();
   }, []);
-const options = categories.map(category => ({
-  value: category.id,
-  label: category.name
-}));
+
+  const options = categories.map(category => ({
+    value: category.id,
+    label: category.name
+  }));
+
   const handleChange = (selectedOption) => {
-    const filtered = products.filter(item => item.categoryId === selectedOption.value);
+    const filtered = allProducts.filter(item => item.categoryId === selectedOption.value);
+    
+    // Reset to first page of filtered results
+    setCurrentPage(1);
+    setTotalPages(Math.ceil(filtered.length / 10));
+
+    // Only show first 10 products
     setFilterList(filtered);
   };
 

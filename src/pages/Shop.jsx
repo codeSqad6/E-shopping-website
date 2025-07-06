@@ -7,56 +7,92 @@ import Banner from "../components/Banner/Banner";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
 import { getProducts } from "./../services/products_services";
 import FilterSelect from './../components/FilterSelect';
-
+import Pagination from 'react-bootstrap/Pagination';
 const Shop = () => {
-  const [products, setProducts] = useState([]);
+  const [allproducts, setAllProducts] = useState([]);
   const [filterList, setFilterList] = useState([]);
-
+   const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+ const itemsPerPage = 10;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getProducts();
-        setProducts(res.data);
+        const res = await getProducts(1, 1000);
+        const products =res.data.data
+       setAllProducts(products);
+        setFilterList(products);
+        setTotalPages(Math.ceil(products.length / itemsPerPage));
       } catch (error) {
         console.error("Failed to fetch products:", error);
       }
     };
-
     fetchData();
   }, []);
 
-  // Sync filter list with products
-  useEffect(() => {
-    console.log("products", products);
-
-    setFilterList(products);
-    console.log(filterList, "filterlist");
-  }, [products]);
+  const paginatedList = filterList.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+ 
+ 
 
   useWindowScrollToTop();
 
   return (
+    <div>
+
+  
     <Fragment>
       <Banner title="products" />
       <section className="filter-bar mt-5">
         <Container className="filter-bar-contianer">
           <Row className="justify-content-center">
             <Col md={4}>
-              <FilterSelect setFilterList={setFilterList} />
+            <FilterSelect
+               setFilterList={setFilterList}
+               setCurrentPage={setCurrentPage}
+               setTotalPages={setTotalPages}
+            />
+
             </Col>
              <Col md={8}>
-              <SearchBar setFilterList={setFilterList} />
+              <SearchBar
+                setFilterList={setFilterList}
+                 setCurrentPage={setCurrentPage}
+                setTotalPages={setTotalPages}
+              />
             </Col>
-          
-         
-     
           </Row>
         </Container>
         <Container>
-          <ShopList productItems={filterList} />
+          <ShopList productItems={paginatedList} />
         </Container>
       </section>
+          <Pagination className="justify-content-center mt-4">
+              <Pagination.Prev
+    onClick={() => handlePageChange(currentPage - 1)}
+    disabled={currentPage === 1}
+  />
+        {[...Array(totalPages)].map((_, idx) => (
+          <Pagination.Item
+            key={idx + 1}
+            active={idx + 1 === currentPage}
+            onClick={() => handlePageChange(idx + 1)}
+          >
+            {idx + 1}
+          </Pagination.Item>
+        ))}
+          <Pagination.Next
+    onClick={() => handlePageChange(currentPage + 1)}
+    disabled={currentPage === totalPages}
+  />
+      </Pagination>
     </Fragment>
+      
+        </div>
   );
 };
 

@@ -1,12 +1,10 @@
+// api/products.js
 import axios from 'axios';
 
-const API_URL = 'http://test.smartsto0re.shop/api/Products'; 
-export const getProducts = async () => {
-  try {
-    const response = await axios.get(API_URL);
-    return response.data; 
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    throw error;
-  }
+const API_BASE = 'http://test.smartsto0re.shop/api';
+
+export const getProducts = (pageNumber = 1, pageSize = 10) => {
+  return axios.get(`${API_BASE}/Products`, {
+    params: { pageNumber, pageSize }
+  });
 };
