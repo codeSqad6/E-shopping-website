@@ -3,10 +3,12 @@ import "./product-card.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../app/features/cart/cartSlice";
-
+import { addToCart, addToCartAPI } from "../../app/features/cart/cartSlice";
+import { useSelector } from "react-redux";
 const ProductCard = ({ title, productItem }) => {
   const dispatch = useDispatch();
+  // const isAuth = useSelector((state) => state.auth.isAuthenticated);
+
   const router = useNavigate();
   const handelClick = () => {
     if (productItem.imageUrls) {
@@ -17,7 +19,9 @@ const ProductCard = ({ title, productItem }) => {
   };
 
   const handelAdd = (productItem) => {
-    dispatch(addToCart({ product: productItem, num: 1 }));
+    // dispatch(addToCart({ product: productItem, num: 1, isAuth }));
+    dispatch(addToCartAPI({ productId: productItem.id, quantity: 1 }));
+
     toast.success("Product has been added to cart!");
   };
   return (

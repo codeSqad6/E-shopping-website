@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import { Form, Button, Spinner } from "react-bootstrap";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { loginUser } from "../authApi";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../../app/features/auth/authSlice";
 import "./Login.css";
 
-const Login =  ({ setIsLoggedIn })=> {
+const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
- 
-
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,10 +29,14 @@ const Login =  ({ setIsLoggedIn })=> {
 
       // حفظ التوكن
       localStorage.setItem("token", res.data.token);
-       setIsLoggedIn(true); //
-      
+      const token = res.data.token;
+
+      dispatch(loginSuccess(token));
+
+      setIsLoggedIn(true); //
+
       navigate("/");
-      toast.success('👋 Welcome back!');
+      toast.success("👋 Welcome back!");
     } catch (err) {
       setErrorMsg(
         err.response?.data?.message || "Incorrect email or password."
@@ -39,7 +45,10 @@ const Login =  ({ setIsLoggedIn })=> {
       setLoading(false);
     }
   };
-
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  //   toast.info("تم تسجيل الخروج.");
+  // };
   return (
     <div className="login-page">
       <div className="login-box">
@@ -50,7 +59,6 @@ const Login =  ({ setIsLoggedIn })=> {
         )}
 
         <Form onSubmit={handleLogin}>
-  
           <div className="input-group">
             <FaUser className="icons" />
             <Form.Control

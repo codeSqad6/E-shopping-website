@@ -1,73 +1,231 @@
+// import { useEffect } from "react";
+// import { Col, Container, Row } from "react-bootstrap";
+// import { useDispatch, useSelector } from "react-redux";
+// import {
+//   addToCart,
+//   decreaseQty,
+//   deleteFromCartAPI,
+//   deleteProduct,
+//   fetchCart,
+// } from "../app/features/cart/cartSlice";
+
+// const Cart = () => {
+//   const { cartList } = useSelector((state) => state.cart);
+//   const isAuth = useSelector((state) => state.auth.isAuthenticated);
+
+//   const dispatch = useDispatch();
+//   dispatch(fetchCart());
+//   dispatch(deleteFromCartAPI({ productId: item.id }));
+
+//   // middlware to localStorage
+//   const totalPrice = cartList.reduce(
+//     (price, item) => price + item.qty * item.price,
+//     0
+//   );
+//   // useEffect(() => {
+//   //   window.scrollTo(0, 0);
+//   //   // if(CartItem.length ===0) {
+//   //   //   const storedCart = localStorage.getItem("cartItem");
+//   //   //   setCartItem(JSON.parse(storedCart));
+//   //   // }
+//   // }, []);
+
+//   return (
+//     <section className="cart-items">
+//       <Container>
+//         <Row className="justify-content-center">
+//           <Col md={8}>
+//             {cartList.length === 0 && (
+//               <h1 className="no-items product">No Items are add in Cart</h1>
+//             )}
+//             {cartList.map((item) => {
+//               const productQty = item.price * item.qty;
+//               return (
+//                 <div className="cart-list" key={item.id}>
+//                   <Row>
+//                     <Col className="image-holder" sm={4} md={3}>
+//                       <img
+//                         src={`http://test.smartsto0re.shop${item.imageUrls}`}
+//                         alt=""
+//                       />
+//                     </Col>
+
+//                     <Col sm={8} md={9}>
+//                       <Row className="cart-content justify-content-center">
+//                         <Col xs={12} sm={9} className="cart-details">
+//                           <h3>{item.productName}</h3>
+//                           <h4>
+//                             ${item.price}.00 * {item.qty}
+//                             <span>${productQty}.00</span>
+//                           </h4>
+//                         </Col>
+//                         <Col xs={12} sm={3} className="cartControl">
+//                           <button
+//                             className="incCart"
+//                             onClick={() => {
+//                               if (!isAuth) return alert("يجب تسجيل الدخول");
+//                               dispatch(addToCart({ product: item, num: 1 }));
+//                             }}
+//                           >
+//                             <i className="fa-solid fa-plus"></i>
+//                           </button>
+//                           <button
+//                             className="desCart"
+//                             onClick={() => {
+//                               if (!isAuth) return alert("يجب تسجيل الدخول");
+//                               dispatch(decreaseQty(item));
+//                             }}
+//                           >
+//                             <i className="fa-solid fa-minus"></i>
+//                           </button>
+//                         </Col>
+//                       </Row>
+//                     </Col>
+//                     <button
+//                       className="delete"
+//                       onClick={() => {
+//                         if (!isAuth) return alert("يجب تسجيل الدخول");
+
+//                         dispatch(deleteProduct(item));
+//                       }}
+//                     >
+//                       <ion-icon name="close"></ion-icon>
+//                     </button>
+//                   </Row>
+//                 </div>
+//               );
+//             })}
+//           </Col>
+//           <Col md={4}>
+//             <div className="cart-total">
+//               <h2>Cart Summary</h2>
+//               <div className=" d_flex">
+//                 <h4>Total Price :</h4>
+//                 <h3>${totalPrice}.00</h3>
+//               </div>
+//             </div>
+//           </Col>
+//         </Row>
+//       </Container>
+//     </section>
+//   );
+// };
+
+// export default Cart;
 import { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addToCart,
-  decreaseQty,
-  deleteProduct,
+  fetchCart,
+  addToCartAPI,
+  deleteFromCartAPI,
+  updateCartItemAPI,
 } from "../app/features/cart/cartSlice";
 
 const Cart = () => {
-  const { cartList } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  // middlware to localStorage
-  const totalPrice = cartList.reduce(
-    (price, item) => price + item.qty * item.price,
+  const { cartList, status } = useSelector((state) => state.cart);
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch, isAuth]);
+
+  // const totalPrice = cartList.reduce(
+  //   (sum, item) => sum + item.qty * item.price,
+  //   0
+  // );
+  const safeCart = Array.isArray(cartList) ? cartList : [];
+  const count = safeCart.length;
+  const totalPrice = safeCart.reduce(
+    (sum, item) => sum + item.quantity * item.unitPrice,
     0
   );
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    // if(CartItem.length ===0) {
-    //   const storedCart = localStorage.getItem("cartItem");
-    //   setCartItem(JSON.parse(storedCart));
-    // }
-  }, []);
+
+  if (!isAuth) {
+    return <p>Please **log in** to view your cart.</p>;
+  }
+
+  if (status === "loading") {
+    return <p>Loading your cart...</p>;
+  }
+
   return (
     <section className="cart-items">
       <Container>
         <Row className="justify-content-center">
           <Col md={8}>
-            {cartList.length === 0 && (
-              <h1 className="no-items product">No Items are add in Cart</h1>
+            {count === 0 && (
+              <h1 className="no-items product">Your cart is empty.</h1>
             )}
-            {cartList.map((item) => {
-              const productQty = item.price * item.qty;
+
+            {safeCart.map((item) => {
+              const productQty = item.unitPrice * item.quantity; //...........
               return (
                 <div className="cart-list" key={item.id}>
                   <Row>
                     <Col className="image-holder" sm={4} md={3}>
-                      <img src={item.imgUrl} alt="" />
+                      <img
+                        src={`http://test.smartsto0re.shop${item.imageUrls}`}
+                        alt={item.productName}
+                      />
                     </Col>
+
                     <Col sm={8} md={9}>
                       <Row className="cart-content justify-content-center">
                         <Col xs={12} sm={9} className="cart-details">
                           <h3>{item.productName}</h3>
                           <h4>
-                            ${item.price}.00 * {item.qty}
-                            <span>${productQty}.00</span>
+                            ${item.unitPrice} × {item.quantity} = $
+                            {productQty.toFixed(2)}
                           </h4>
                         </Col>
                         <Col xs={12} sm={3} className="cartControl">
                           <button
                             className="incCart"
                             onClick={() =>
-                              dispatch(addToCart({ product: item, num: 1 }))
+                              dispatch(
+                                addToCartAPI({
+                                  productId: item.id,
+                                  quantity: item.quantity + 1,
+                                })
+                              )
                             }
                           >
                             <i className="fa-solid fa-plus"></i>
                           </button>
                           <button
                             className="desCart"
-                            onClick={() => dispatch(decreaseQty(item))}
+                            onClick={() => {
+                              const newQty = item.quantity - 1;
+                              if (newQty > 0) {
+                                dispatch(
+                                  addToCartAPI({
+                                    productId: item.id,
+                                    quantity: newQty,
+                                  })
+                                );
+                              } else {
+                                dispatch(
+                                  deleteFromCartAPI({ productId: item.id })
+                                );
+                              }
+                            }}
                           >
                             <i className="fa-solid fa-minus"></i>
                           </button>
                         </Col>
                       </Row>
                     </Col>
+
                     <button
                       className="delete"
-                      onClick={() => dispatch(deleteProduct(item))}
+                      onClick={() => {
+                        // بعد حذف المنتج
+                        dispatch(deleteFromCartAPI({ productId: item.id }));
+                      }}
                     >
                       <ion-icon name="close"></ion-icon>
                     </button>
@@ -76,12 +234,13 @@ const Cart = () => {
               );
             })}
           </Col>
+
           <Col md={4}>
             <div className="cart-total">
               <h2>Cart Summary</h2>
-              <div className=" d_flex">
-                <h4>Total Price :</h4>
-                <h3>${totalPrice}.00</h3>
+              <div className="d_flex">
+                <h4>Total Price:</h4>
+                <h3>${totalPrice.toFixed(2)}</h3>
               </div>
             </div>
           </Col>
