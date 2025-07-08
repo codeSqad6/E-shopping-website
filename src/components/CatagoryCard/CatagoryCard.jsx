@@ -8,9 +8,9 @@ import { addToCart } from "../../app/features/cart/cartSlice";
 const CatagoryCard = ({ title, productItem }) => {
   const dispatch = useDispatch();
   const router = useNavigate();
-  const handelClick = () => {
-    router(`/shop/${productItem.id}`);
-  };
+ const handelClick = () => {
+  router(`/shop?category=${productItem.id}`);
+};
   const handelAdd = (productItem) => {
     dispatch(addToCart({ product: productItem, num: 1 }));
     toast.success("Product has been added to cart!");

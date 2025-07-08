@@ -9,14 +9,11 @@ const BrandCard = ({ title, BrandItem }) => {
   const dispatch = useDispatch();
   const router = useNavigate();
   const handelClick = () => {
-    if (BrandItem.logoUrl) {
-      // المنتج جاي من الـ API
-      router(`/shop/api/${BrandItem.id}`);
-    } else {
-      // المنتج من المصفوفة المحلية
-      router(`/shop/local/${BrandItem.id}`);
-    }
-  };
+  if (BrandItem.logoUrl) {
+    router(`/shop?brand=${BrandItem.id}`); // ✅ التنقل مع باراميتر brand
+  }
+};
+
 
   return (
     <Col lg={3} md={4} sm={6} xs={12} className="Brand mtop">
