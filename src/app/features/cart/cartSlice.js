@@ -172,11 +172,11 @@ export const addToCartAPI = createAsyncThunk(
   "cart/addToCartAPI",
   async ({ productId, quantity }, { rejectWithValue }) => {
     try {
-      // const res = await api.post("Cart/add-item", { productId, quantity });
+      const res = await api.post("Cart/add-item", { productId, quantity });
       console.log(productId, quantity);
 
       toast.success("✅ Added to cart");
-      // return Array.isArray(res.data.cartItems) ? res.data.cartItems : [];
+      return Array.isArray(res.data.cartItems) ? res.data.cartItems : [];
     } catch (err) {
       const msg = err.response?.data?.message || "Failed to add to cart";
       toast.error(msg);
