@@ -187,9 +187,10 @@ export const addToCartAPI = createAsyncThunk(
 
 export const deleteFromCartAPI = createAsyncThunk(
   "cart/deleteFromCartAPI",
-  async ({ productId }, { rejectWithValue }) => {
+  async ({ cartItemId }, { rejectWithValue }) => {
     try {
-      const res = await api.delete(`Cart/remove-item/${productId}`);
+      const res = await api.delete(`Cart/remove-item/${cartItemId}`);
+
       toast.info("🗑️ Removed from cart");
       return Array.isArray(res.data.cartItems) ? res.data.cartItems : [];
     } catch (err) {
@@ -200,23 +201,24 @@ export const deleteFromCartAPI = createAsyncThunk(
   }
 );
 
-// export const updateCartItemAPI = createAsyncThunk(
-//   "cart/updateCartItemAPI",
-//   async ({ productId, Quantaty }, { rejectWithValue }) => {
-//     try {
-//       const res = await api.put("Cart/update-item", {
-//         productId,
-//         Quantity: Quantaty,
-//       });
-//       toast.info("✅ Quantity updated");
-//       return res.data.cartItems;
-//     } catch (err) {
-//       const msg = err.response?.data?.message || "Failed to update quantity";
-//       toast.error(msg);
-//       return rejectWithValue(msg);
-//     }
-//   }
-// );
+export const updateCartItemAPI = createAsyncThunk(
+  "cart/updateCartItemAPI",
+  async ({ cartItemId, quantity }, { rejectWithValue }) => {
+    try {
+      const res = await api.put(`Cart/update-item/${cartItemId}`, {
+        quantity,
+      });
+      console.log(cartItemId, quantity);
+
+      toast.info("✅ Quantity updated");
+      return res.data.cartItems;
+    } catch (err) {
+      const msg = err.response?.data?.message || "Failed to update quantity";
+      toast.error(msg);
+      return rejectWithValue(msg);
+    }
+  }
+);
 
 // 2. تهيئة المقطع
 

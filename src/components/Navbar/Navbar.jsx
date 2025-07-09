@@ -18,7 +18,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
     setShowLogoutDialog(false);
     toast.success("logged out successfully!");
     dispatch(logout());
-    dispatch(reset());
+    // dispatch(reset());
     navigate("/"); // يرجّع المستخدم للرئيسية بعد تسجيل الخروج
   };
 
@@ -74,8 +74,10 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
                 aria-label="Go to Cart Page"
                 to="/cart"
                 className="cart"
-                data-num={cartList.length}
-                // data-num={Array.isArray(cartList) ? cartList.length : 0}
+                // data-num={cartList.length}
+                data-num={
+                  Array.isArray(cartList) ? cartList.length : cartList.length
+                }
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

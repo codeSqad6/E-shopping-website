@@ -15,37 +15,40 @@ const ProductDetailsAPI = ({ setRelatedProducts }) => {
   const [categoryName, setCategoryName] = useState("");
   const [quantity, setQuantity] = useState(1);
 
- useEffect(() => {
-  const fetchProductDetails = async () => {
-    try {
-      const res = await axios.get(`http://test.smartsto0re.shop/api/Products/${id}`);
-      const fetchedProduct = res.data;
-
-      setProduct(fetchedProduct);
-
-      const categoryRes = await axios.get(
-        `http://test.smartsto0re.shop/api/Categories/${fetchedProduct.categoryId}`
-      );
-      setCategoryName(categoryRes.data.name);
-
-      // ✅ هنا ضيف كود المنتجات المشابهة
-      if (fetchedProduct?.categoryId && setRelatedProducts) {
-        const allRes = await axios.get("http://test.smartsto0re.shop/api/Products");
-        const filtered = allRes.data.data.filter(
-          (item) =>
-            item.categoryId === fetchedProduct.categoryId && item.id !== fetchedProduct.id
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const res = await axios.get(
+          `http://test.smartsto0re.shop/api/Products/${id}`
         );
-        setRelatedProducts(filtered);
+        const fetchedProduct = res.data;
+
+        setProduct(fetchedProduct);
+
+        const categoryRes = await axios.get(
+          `http://test.smartsto0re.shop/api/Categories/${fetchedProduct.categoryId}`
+        );
+        setCategoryName(categoryRes.data.name);
+
+        // ✅ هنا ضيف كود المنتجات المشابهة
+        if (fetchedProduct?.categoryId && setRelatedProducts) {
+          const allRes = await axios.get(
+            "http://test.smartsto0re.shop/api/Products"
+          );
+          const filtered = allRes.data.data.filter(
+            (item) =>
+              item.categoryId === fetchedProduct.categoryId &&
+              item.id !== fetchedProduct.id
+          );
+          setRelatedProducts(filtered);
+        }
+      } catch (error) {
+        console.error("Error fetching product details:", error);
       }
+    };
 
-    } catch (error) {
-      console.error("Error fetching product details:", error);
-    }
-  };
-
-  fetchProductDetails();
-}, [id, setRelatedProducts]);
-
+    fetchProductDetails();
+  }, [id, setRelatedProducts]);
 
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
@@ -59,7 +62,7 @@ const ProductDetailsAPI = ({ setRelatedProducts }) => {
   if (!product) return <p>Loading...</p>;
 
   return (
-      <section className="product-page">
+    <section className="product-page">
       <Container>
         <Row className="justify-content-center">
           <Col md={6}>

@@ -168,7 +168,7 @@ const Cart = () => {
                   <Row>
                     <Col className="image-holder" sm={4} md={3}>
                       <img
-                        src={`http://test.smartsto0re.shop${item.imageUrls}`}
+                        src={`http://test.smartsto0re.shop${item.product}`}
                         alt={item.productName}
                       />
                     </Col>
@@ -185,32 +185,41 @@ const Cart = () => {
                         <Col xs={12} sm={3} className="cartControl">
                           <button
                             className="incCart"
-                            onClick={() =>
+                            onClick={() => {
                               dispatch(
                                 addToCartAPI({
-                                  productId: item.id,
-                                  quantity: item.quantity + 1,
+                                  productId: item.productId,
+                                  quantity: 1,
                                 })
-                              )
-                            }
+                              ).then(() => dispatch(fetchCart()));
+                            }}
                           >
                             <i className="fa-solid fa-plus"></i>
                           </button>
                           <button
                             className="desCart"
-                            onClick={() => {
+                            onClick={async () => {
                               const newQty = item.quantity - 1;
-                              if (newQty > 0) {
-                                dispatch(
-                                  addToCartAPI({
-                                    productId: item.id,
-                                    quantity: newQty,
-                                  })
-                                );
-                              } else {
-                                dispatch(
-                                  deleteFromCartAPI({ productId: item.id })
-                                );
+
+                              try {
+                                if (newQty > 0) {
+                                  await dispatch(
+                                    updateCartItemAPI({
+                                      cartItemId: item.id, // ✅ هذا هو ID عنصر السلة وليس المنتج
+                                      quantity: newQty, // تأكد من الحرف الكبير حسب الـ API
+                                    })
+                                  ).unwrap();
+                                } else {
+                                  await dispatch(
+                                    deleteFromCartAPI({
+                                      cartItemId: item.id,
+                                    })
+                                  ).unwrap();
+                                }
+
+                                dispatch(fetchCart());
+                              } catch (error) {
+                                console.error("❌ خطأ في تقليل الكمية:", error);
                               }
                             }}
                           >
@@ -224,7 +233,7 @@ const Cart = () => {
                       className="delete"
                       onClick={() => {
                         // بعد حذف المنتج
-                        dispatch(deleteFromCartAPI({ productId: item.id }));
+                        dispatch(deleteFromCartAPI({ cartItemId: item.id }));
                       }}
                     >
                       <ion-icon name="close"></ion-icon>
