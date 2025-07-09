@@ -3,7 +3,11 @@ import "./product-card.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { addToCart, addToCartAPI } from "../../app/features/cart/cartSlice";
+import {
+  addToCart,
+  addToCartAPI,
+  fetchCart,
+} from "../../app/features/cart/cartSlice";
 import { useSelector } from "react-redux";
 const ProductCard = ({ title, productItem }) => {
   const dispatch = useDispatch();
@@ -19,11 +23,16 @@ const ProductCard = ({ title, productItem }) => {
   };
 
   const handelAdd = (productItem) => {
-    // dispatch(addToCart({ product: productItem, num: 1, isAuth }));
-    dispatch(addToCartAPI({ productId: productItem.id, quantity: 1 }));
-
-    toast.success("Product has been added to cart!");
+    dispatch(addToCartAPI({ productId: productItem.id, quantity: 1 }))
+      .then(() => {
+        dispatch(fetchCart()); // ✅ إعادة تحميل الكارت بعد الإضافة
+      })
+      .catch((err) => {
+        toast.error("Something went wrong!");
+        console.error(err);
+      });
   };
+
   return (
     <Col lg={3} md={4} sm={6} xs={12} className="product mtop mb-5">
       {title === "Products" && <span className="discount">20% Off</span>}

@@ -219,7 +219,17 @@ export const updateCartItemAPI = createAsyncThunk(
     }
   }
 );
-
+export const fetchProductById = createAsyncThunk(
+  "products/fetchProductById",
+  async (productId, { rejectWithValue }) => {
+    try {
+      const res = await api.get(`/Products/${productId}`);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue("فشل في جلب المنتج");
+    }
+  }
+);
 // 2. تهيئة المقطع
 
 const cartSlice = createSlice({

@@ -121,17 +121,37 @@ import {
   deleteFromCartAPI,
   updateCartItemAPI,
 } from "../app/features/cart/cartSlice";
+import axios from "axios";
+import { useState } from "react";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { cartList, status } = useSelector((state) => state.cart);
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const [productDetailsMap, setProductDetailsMap] = useState({});
 
   useEffect(() => {
-    if (isAuth) {
-      dispatch(fetchCart());
+    if (isAuth && Array.isArray(cartList)) {
+      cartList.forEach((item) => {
+        if (!item.product && !productDetailsMap[item.productId]) {
+          axios
+            .get(`http://test.smartsto0re.shop/api/Products/${item.productId}`)
+            .then((res) => {
+              setProductDetailsMap((prev) => ({
+                ...prev,
+                [item.productId]: res.data,
+              }));
+            })
+            .catch((err) => {
+              console.error(
+                `❌ فشل تحميل بيانات المنتج: ${item.productId}`,
+                err
+              );
+            });
+        }
+      });
     }
-  }, [dispatch, isAuth]);
+  }, [cartList, isAuth]);
 
   // const totalPrice = cartList.reduce(
   //   (sum, item) => sum + item.qty * item.price,
@@ -163,12 +183,23 @@ const Cart = () => {
 
             {safeCart.map((item) => {
               const productQty = item.unitPrice * item.quantity; //...........
+              console.log("📸 image URL:", item.product?.imageUrls);
+              console.log("🧩 item.product:", item.product);
+
               return (
                 <div className="cart-list" key={item.id}>
                   <Row>
                     <Col className="image-holder" sm={4} md={3}>
                       <img
-                        src={`http://test.smartsto0re.shop${item.product}`}
+                        src={
+                          item.product?.imageUrls?.[0]
+                            ? `http://test.smartsto0re.shop${item.product.imageUrls[0]}`
+                            : productDetailsMap[item.productId]?.imageUrls?.[0]
+                            ? `http://test.smartsto0re.shop${
+                                productDetailsMap[item.productId].imageUrls[0]
+                              }`
+                            : "https://via.placeholder.com/150"
+                        }
                         alt={item.productName}
                       />
                     </Col>
