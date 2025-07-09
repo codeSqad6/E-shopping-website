@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, reset } from "../../app/features/auth/authSlice";
+import { fetchCart } from "../../app/features/cart/cartSlice";
 const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
   const { cartList } = useSelector((state) => state.cart);
   const [expand, setExpand] = useState(false);
@@ -30,9 +31,25 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
         setIsFixed(false);
       }
     };
+
     window.addEventListener("scroll", scrollHandler);
     return () => window.removeEventListener("scroll", scrollHandler);
   }, []);
+
+  useEffect(() => {
+    console.log("✅ isLoggedIn:", isLoggedIn);
+    if (isLoggedIn) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch, isLoggedIn]);
+
+  console.log("✅ cartList in NavBar:", cartList);
+  console.log("🧾 First cart item:", cartList[0]);
+
+  const totalQty = Array.isArray(cartList)
+    ? cartList.reduce((acc, item) => acc + item.quantity, 0)
+    : 0;
+
   // useEffect(()=> {
   //   if(CartItem.length ===0) {
   //     const storedCart = localStorage.getItem("cartItem");
@@ -74,10 +91,8 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
                 aria-label="Go to Cart Page"
                 to="/cart"
                 className="cart"
-                // data-num={cartList.length}
-                data-num={
-                  Array.isArray(cartList) ? cartList.length : cartList.length
-                }
+                // data-num={}
+                data-num={totalQty}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +192,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
                   aria-label="Go to Cart Page"
                   to="/cart"
                   className="cart"
-                  data-num={Array.isArray(cartList) ? cartList.length : 0}
+                  data-num={totalQty}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

@@ -93,7 +93,7 @@
   font-size: 25px;
 }
 
-.logo .logo-link{
+.logo .logo-link {
   font-size: 25px;
   font-weight: 500;
   color: black;
@@ -128,7 +128,7 @@
   z-index: 3;
 }
 
-.cart::before {
+.cart::after {
   content: attr(data-num);
   position: absolute;
   right: 0;
@@ -174,7 +174,7 @@
   display: none;
 }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
   .navbar-toggler span {
     width: 25px !important;
     height: 3px !important;
@@ -196,5 +196,4 @@
     align-items: flex-end;
     gap: 5px;
   }
-  
 }

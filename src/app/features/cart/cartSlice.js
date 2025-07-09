@@ -270,13 +270,14 @@ const cartSlice = createSlice({
         }
       })
       .addCase(deleteFromCartAPI.fulfilled, (state, action) => {
-        console.log("✅ deleteFromCartAPI payload:", action.payload);
+        const deletedItemId = action.meta.arg.cartItemId;
 
-        if (Array.isArray(action.payload)) {
-          state.cartList = action.payload;
-        } else {
-          console.error("❌ Payload is not an array", action.payload);
-        }
+        // حذف العنصر يدويًا بناءً على ID
+        state.cartList = state.cartList.filter(
+          (item) => item.id !== deletedItemId
+        );
+
+        console.log("✅ Removed item from cartList in state:", deletedItemId);
       });
   },
 });
