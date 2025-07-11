@@ -135,25 +135,33 @@ const Register = () => {
             <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
           </div>
 
-          <div className="input-group">
-            <FaLock className="icons" />
-            <Form.Control
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              isInvalid={!!errors.password}
-            />
-            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
-            <span
-              className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              <i className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
-            </span>
-          </div>
+        <Form.Group className="position-relative mb-3">
+  <div className="input-group">
+      <FaLock className="icons" />
+    <Form.Control
+      type={showPassword ? "text" : "password"}
+      name="password"
+      placeholder="Password"
+      value={form.password}
+      onChange={handleChange}
+      required
+      isInvalid={!!errors.password}
+    />
+
+    <span
+      className="toggle-password"
+      style={{ cursor: "pointer" }}
+      onClick={() => setShowPassword(!showPassword)}
+    >
+      <i className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`} />
+    </span>
+  </div>
+
+  <Form.Control.Feedback type="invalid" className="d-block">
+    {errors.password}
+  </Form.Control.Feedback>
+</Form.Group>
+
 
           <Button type="submit" className="btn-register w-100" disabled={loading}>
             {loading ? <Spinner animation="border" size="sm" /> : "Register"}
