@@ -11,7 +11,7 @@ import {
 import { useSelector } from "react-redux";
 const ProductCard = ({ title, productItem }) => {
   const dispatch = useDispatch();
-  // const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const router = useNavigate();
   const handelClick = () => {
@@ -23,12 +23,18 @@ const ProductCard = ({ title, productItem }) => {
   };
 
   const handelAdd = (productItem) => {
+    if (!isAuth) {
+      toast.warning("يجب تسجيل الدخول أولاً");
+      router("/login"); // ✅ توجيه المستخدم
+      return;
+    }
+
     dispatch(addToCartAPI({ productId: productItem.id, quantity: 1 }))
       .then(() => {
-        dispatch(fetchCart()); // ✅ إعادة تحميل الكارت بعد الإضافة
+        dispatch(fetchCart());
       })
       .catch((err) => {
-        toast.error("Something went wrong!");
+        toast.error("حدث خطأ أثناء الإضافة");
         console.error(err);
       });
   };

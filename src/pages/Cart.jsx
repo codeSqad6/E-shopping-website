@@ -215,19 +215,23 @@ const Cart = () => {
                         </Col>
                         <Col xs={12} sm={3} className="cartControl">
                           <button
+                            type="button"
                             className="incCart"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
+
                               dispatch(
                                 addToCartAPI({
                                   productId: item.productId,
                                   quantity: 1,
                                 })
-                              ).then(() => dispatch(fetchCart()));
+                              );
                             }}
                           >
                             <i className="fa-solid fa-plus"></i>
                           </button>
                           <button
+                            type="button"
                             className="desCart"
                             onClick={async () => {
                               const newQty = item.quantity - 1;
@@ -248,7 +252,7 @@ const Cart = () => {
                                   ).unwrap();
                                 }
 
-                                dispatch(fetchCart());
+                                // dispatch(fetchCart());
                               } catch (error) {
                                 console.error("❌ خطأ في تقليل الكمية:", error);
                               }
@@ -261,6 +265,7 @@ const Cart = () => {
                     </Col>
 
                     <button
+                      type="button"
                       className="delete"
                       onClick={() => {
                         // بعد حذف المنتج

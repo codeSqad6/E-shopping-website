@@ -179,6 +179,7 @@ export const addToCartAPI = createAsyncThunk(
       return Array.isArray(res.data.cartItems) ? res.data.cartItems : [];
     } catch (err) {
       const msg = err.response?.data?.message || "Failed to add to cart";
+
       toast.error(msg);
       return rejectWithValue(msg);
     }
@@ -235,28 +236,7 @@ export const fetchProductById = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState: { cartList: [], status: "idle", error: null },
-  reducers: {
-    // // إذا أردت إبقاء نسخة التخزين المحلي
-    // addToCart(state, action) {
-    //   const product = action.payload.product;
-    //   const Quantaty = action.payload.num;
-    //   const found = state.cartList.find((i) => i.id === product.id);
-    //   if (found) found.Quantaty += Quantaty;
-    //   else state.cartList.push({ ...product, Quantaty });
-    // },
-    // decreaseQty(state, action) {
-    //   const item = action.payload;
-    //   const found = state.cartList.find((i) => i.id === item.id);
-    //   if (!found) return;
-    //   if (found.Quantaty <= 1)
-    //     state.cartList = state.cartList.filter((i) => i.id !== item.id);
-    //   else found.Quantaty -= 1;
-    // },
-    // deleteProduct(state, action) {
-    //   const item = action.payload;
-    //   state.cartList = state.cartList.filter((i) => i.id !== item.id);
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchCart.pending, (s) => {
@@ -270,15 +250,33 @@ const cartSlice = createSlice({
         s.status = "failed";
         s.error = a.payload;
       })
-      .addCase(addToCartAPI.fulfilled, (s, a) => {
-        console.log("✅ addToCartAPI payload:", a.payload);
+      .addCase(addToCartAPI.fulfilled, (state, action) => {
+        const { productId, quantity } = action.meta.arg;
+        const existing = state.cartList.find(
+          (item) => item.productId === productId
+        );
 
-        if (Array.isArray(a.payload)) {
-          s.cartList = a.payload;
+        if (existing) {
+          existing.quantity += quantity;
         } else {
-          console.warn("🔍 أبواب الرد غير مصفوفة:", a.payload);
+          // لو رجعلك المنتج الجديد من الـ API، ضيفه هنا
+          const newItem = action.payload?.find(
+            (item) => item.productId === productId
+          );
+          if (newItem) {
+            state.cartList.push(newItem);
+          }
         }
       })
+      .addCase(updateCartItemAPI.fulfilled, (state, action) => {
+        const { cartItemId, quantity } = action.meta.arg;
+        const existing = state.cartList.find((item) => item.id === cartItemId);
+
+        if (existing) {
+          existing.quantity = quantity;
+        }
+      })
+
       .addCase(deleteFromCartAPI.fulfilled, (state, action) => {
         const deletedItemId = action.meta.arg.cartItemId;
 
