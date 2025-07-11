@@ -68,15 +68,15 @@ useEffect(() => {
 
 
   return (
-    <Col lg={3} md={4} sm={6} xs={12} className="product mtop mb-5">
+     <Col lg={3} md={4} sm={6} xs={12} className="product mtop mb-5">
       {title === "Products" && <span className="discount">20% Off</span>}
 
       <img
         loading="lazy"
-        onClick={() => handelClick()}
+        onClick={handelClick}
         src={
           productItem.imageUrls
-            ? `http://test.smartsto0re.shop${productItem.imageUrls}`
+            ? `http://test.smartsto0re.shop${productItem.imageUrls[0]}`
             : productItem.imgUrl
         }
         alt={productItem.name}
@@ -85,15 +85,29 @@ useEffect(() => {
       <div className="product-like">
         <ion-icon name="heart-outline"></ion-icon>
       </div>
-     <div className="rate">
+      <div className="product-details">
+        <h3 onClick={handelClick}>{productItem.name}</h3>
+        <div className="rate">
   <div className="stars">
     {renderStars(avgRating ?? 0)}
   </div>
-  <span>{avgRating !== null ? avgRating.toFixed(1) + " ratings" : "No ratings yet"}</span>
+  {/* <span>{avgRating !== null ? avgRating.toFixed(1) + " ratings" : "No ratings yet"}</span> */}
 </div>
-
+        <div className="price">
+          <h4>${productItem.price}</h4>
+          <button
+            aria-label="Add"
+            type="button"
+            className="add"
+            onClick={() => handelAdd(productItem)}
+          >
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </div>
+      </div>
     </Col>
   );
+
 };
 
 export default ProductCard;

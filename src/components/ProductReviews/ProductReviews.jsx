@@ -11,6 +11,8 @@ const ProductReviews = ({ productId }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [hoveredStar, setHoveredStar] = useState(null);
+const userId = localStorage.getItem("userId");
+const [hasReviewed, setHasReviewed] = useState(false);
 
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user")); // Assuming JWT or user info is stored here
@@ -48,6 +50,8 @@ const ProductReviews = ({ productId }) => {
         }));
 
         setReviews(detailed);
+        setHasReviewed(productReviews.some((r) => r.userId === userId));
+
       } catch (err) {
         console.error("Error loading reviews:", err);
       }
@@ -144,22 +148,39 @@ const handleSave = async () => {
           
           </ul>
 
-          <Button onClick={handleOpenModal} variant="primary">
-            Add Review
-          </Button>
+         {!hasReviewed && (
+  <Button onClick={handleOpenModal} variant="primary">
+    Add Review
+  </Button>
+)}
+
         </div>
 
         {listSelected === reviews.length === 0 ? (
           <p>No reviews yet.</p>
         ) : (
           <div className="rates">
-            {reviews.map((rate, idx) => (
-              <div className="rate-comment" key={idx}>
-                <span>{rate.userName}</span>
-                <span>{rate.rating} ⭐</span>
-                <p>{rate.comment}</p>
-              </div>
-            ))}
+         <div className="row">
+  {reviews.map((rate, idx) => (
+    <div className="col-md-6 col-lg-4 mb-4" key={idx}>
+      <div className="card shadow-sm p-3">
+        <h5 className="mb-2">{rate.userName}</h5>
+        <div className="mb-2">
+          {[...Array(5)].map((_, i) => (
+            <i
+              key={i}
+              className={`fa fa-star ${
+                i < rate.rating ? "text-warning" : "text-secondary"
+              }`}
+            ></i>
+          ))}
+        </div>
+        <p className="text-muted mb-0">{rate.comment}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
           </div>
         )}
 
