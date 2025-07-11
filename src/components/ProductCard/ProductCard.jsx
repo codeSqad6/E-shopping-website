@@ -1,6 +1,7 @@
 import { Col } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import "./product-card.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import {
@@ -8,12 +9,16 @@ import {
   addToCartAPI,
   fetchCart,
 } from "../../app/features/cart/cartSlice";
+import axios from "axios";
 import { useSelector } from "react-redux";
 const ProductCard = ({ title, productItem }) => {
+  const [avgRating, setAvgRating] = useState(null);
+  // const { id } = useParams();
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const router = useNavigate();
+  // const isAuth = useSelector((state) => state.auth.isAuthenticated);
   const handelClick = () => {
     if (productItem.imageUrls) {
       router(`/shop/api/${productItem.id}`);
@@ -38,6 +43,40 @@ const ProductCard = ({ title, productItem }) => {
         console.error(err);
       });
   };
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const reviewRes = await axios.get(
+          `http://test.smartsto0re.shop/api/Review`
+        );
+        const reviews = reviewRes.data;
+        const productReviews = reviews.filter(
+          (r) => r.productId === productItem.id
+        );
+
+        if (productReviews.length > 0) {
+          const total = productReviews.reduce((sum, r) => sum + r.rating, 0);
+          setAvgRating(total / productReviews.length);
+        } else {
+          setAvgRating(0);
+        }
+      } catch (err) {
+        console.error("Failed to fetch reviews", err);
+      }
+    };
+
+    fetchReviews();
+  }, [productItem.id]);
+
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const emptyStars = 5 - fullStars;
+
+    return [
+      ...Array(fullStars).fill(<i className="fa fa-star text-warning"></i>),
+      ...Array(emptyStars).fill(<i className="fa fa-star text-secondary"></i>),
+    ];
+  };
 
   return (
     <Col lg={3} md={4} sm={6} xs={12} className="product mtop mb-5">
@@ -45,10 +84,10 @@ const ProductCard = ({ title, productItem }) => {
 
       <img
         loading="lazy"
-        onClick={() => handelClick()}
+        onClick={handelClick}
         src={
           productItem.imageUrls
-            ? `http://test.smartsto0re.shop${productItem.imageUrls}`
+            ? `http://test.smartsto0re.shop${productItem.imageUrls[0]}`
             : productItem.imgUrl
         }
         alt={productItem.name}
@@ -58,19 +97,16 @@ const ProductCard = ({ title, productItem }) => {
         <ion-icon name="heart-outline"></ion-icon>
       </div>
       <div className="product-details">
-        <h3 onClick={() => handelClick()}>{productItem.name}</h3>
+        <h3 onClick={handelClick}>{productItem.name}</h3>
         <div className="rate">
-          <i className="fa fa-star"></i>
-          <i className="fa fa-star"></i>
-          <i className="fa fa-star"></i>
-          <i className="fa fa-star"></i>
-          <i className="fa fa-star"></i>
+          <div className="stars">{renderStars(avgRating ?? 0)}</div>
+          {/* <span>{avgRating !== null ? avgRating.toFixed(1) + " ratings" : "No ratings yet"}</span> */}
         </div>
         <div className="price">
           <h4>${productItem.price}</h4>
           <button
             aria-label="Add"
-            type="submit"
+            type="button"
             className="add"
             onClick={() => handelAdd(productItem)}
           >

@@ -26,10 +26,17 @@ const Login = ({ setIsLoggedIn }) => {
 
     try {
       const res = await loginUser({ email, password });
-
+console.log("✅ Login Response:", res.data);
       // حفظ التوكن
-      localStorage.setItem("token", res.data.token);
-      const token = res.data.token;
+      const token = res.data.token; 
+       localStorage.setItem("token", res.data.token);
+    localStorage.setItem("username", res.data.username);
+    
+    // ✅ استخراج userId من التوكن JWT:
+    const payload = JSON.parse(atob(res.data.token.split('.')[1]));
+    const userId = payload.uid;
+
+    localStorage.setItem("userId", userId);
 
       dispatch(loginSuccess(token));
 
