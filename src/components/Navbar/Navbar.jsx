@@ -48,9 +48,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
   console.log("✅ cartList in NavBar:", cartList);
   console.log("🧾 First cart item:", cartList[0]);
 
-  const totalQty = Array.isArray(cartList)
-    ? cartList.reduce((acc, item) => acc + item.quantity, 0)
-    : 0;
+  const totalQty = Array.isArray(cartList) ? cartList.length : 0;
 
   // useEffect(()=> {
   //   if(CartItem.length ===0) {
@@ -94,7 +92,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
                 to="/cart"
                 className="cart"
                 // data-num={}
-                data-num={totalQty}
+                data-num={isLoggedIn ? totalQty : ""}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -194,7 +192,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
                   aria-label="Go to Cart Page"
                   to="/cart"
                   className="cart"
-                  data-num={totalQty}
+                  data-num={isLoggedIn ? totalQty : ""}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
