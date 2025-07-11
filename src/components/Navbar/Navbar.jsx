@@ -15,6 +15,8 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
   const dispatch = useDispatch();
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     setIsLoggedIn(false);
     setShowLogoutDialog(false);
     toast.success("logged out successfully!");

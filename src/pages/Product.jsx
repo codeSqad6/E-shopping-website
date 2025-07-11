@@ -1,40 +1,31 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import Banner from "../components/Banner/Banner";
 import { Container } from "react-bootstrap";
 import ShopList from "../components/ShopList";
-import { products } from "../utils/products";
 import { useParams } from "react-router-dom";
-import ProductDetails from "../components/ProductDetails/ProductDetails";
+import ProductDetails from "../components/ProductDetails/ProductDetailsAPI";
 import ProductReviews from "../components/ProductReviews/ProductReviews";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
 
 const Product = () => {
   const { id } = useParams();
-  const [selectedProduct, setSelectedProduct] = useState(
-    products.filter((item) => parseInt(item.id) === parseInt(id))[0]
-  );
+  const [productTitle, setProductTitle] = useState("Product Details");
+  const [productId, setProductId] = useState("");
+  const [category, setCategory] = useState("");
   const [relatedProducts, setRelatedProducts] = useState([]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    setSelectedProduct(
-      products.filter((item) => parseInt(item.id) === parseInt(id))[0]
-    );
-    setRelatedProducts(
-      products.filter(
-        (item) =>
-          item.category === selectedProduct?.category &&
-          item.id !== selectedProduct?.id
-      )
-    );
-  }, [selectedProduct, id]);
 
   useWindowScrollToTop();
 
   return (
     <Fragment>
-      <Banner title={selectedProduct?.productName} />
-      <ProductDetails selectedProduct={selectedProduct} />
-      <ProductReviews selectedProduct={selectedProduct} />
+      <Banner title={productTitle} />
+      <ProductDetails
+        setTitle={setProductTitle}
+        setProductId={setProductId}
+        setCategory={setCategory}
+        setRelatedProducts={setRelatedProducts}
+      />
+      <ProductReviews productId={productId} />
       <section className="related-products">
         <Container>
           <h3>You might also like</h3>
