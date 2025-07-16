@@ -92,7 +92,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
                 to="/cart"
                 className="cart"
                 // data-num={}
-                data-num={isLoggedIn ? totalQty : ""}
+                data-num={isLoggedIn ? totalQty : 0}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -192,7 +192,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
                   aria-label="Go to Cart Page"
                   to="/cart"
                   className="cart"
-                  data-num={isLoggedIn ? totalQty : ""}
+                  data-num={isLoggedIn ? totalQty : 0}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
